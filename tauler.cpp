@@ -62,6 +62,20 @@ void escriuTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMNES])
     }
 }
 
+void inicialitza(const string& nomFitxer)
+{
+
+}
+
+void actualitzaMovimentsValids()
+{
+
+}
+
+bool mouFitxa(const Posicio& origen, const Posicio& desti)
+{
+
+}
 
 void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[])
 {
@@ -85,4 +99,9 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
             }
         }
     }
+}
+
+string toString() const
+{
+
 }

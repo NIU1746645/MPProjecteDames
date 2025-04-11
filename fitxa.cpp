@@ -2,7 +2,7 @@
 
 char Fitxa::toChar() const 
 {
-    char tornar = "";
+    char tornar = ' ';
 
     if (m_tipus == TIPUS_EMPTY)
         tornar = ' ';
@@ -19,7 +19,7 @@ char Fitxa::toChar() const
             if (m_color == COLOR_BLANC)
                 tornar = 'D';
             else
-                tornar = 'd';
+                tornar = 'R';
         }
     
     return tornar;
@@ -51,7 +51,7 @@ void Fitxa::fromChar(char c)
                     m_color = COLOR_BLANC;
                 }
                  else 
-                    if (c == 'd') 
+                    if (c == 'R') 
                     {
                         m_tipus = TIPUS_DAMA;
                         m_color = COLOR_NEGRE;
