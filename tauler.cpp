@@ -1,4 +1,5 @@
 #include "tauler.h"	
+#include "tauler.hpp"
 
 void inicialitzaTauler(char tauler[N_FILES][N_COLUMNES])
 {
@@ -74,7 +75,7 @@ void actualitzaMovimentsValids()
 
 bool mouFitxa(const Posicio& origen, const Posicio& desti)
 {
-
+    return false;
 }
 
 void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[])
@@ -101,7 +102,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     }
 }
 
-string toString() const
+string Tauler::toString() const
 {
-
+    return "";
 }
