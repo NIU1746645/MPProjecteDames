@@ -2,8 +2,9 @@
 #define MOVIMENT_H
 
 #include "posicio.h"
+#include "posicio.hpp"
 
-const int N_MOVIMENTS = 100
+const int N_MOVIMENTS = 100;
 
 class Moviment
 {
@@ -18,10 +19,9 @@ private:
     Posicio m_origen;
     Posicio m_desti;
 
-    Posicio m_movimentsValids [[]];
-    Posicio m_movimentActual[];
-    Posicio m_posicionValides [[]];
+    Posicio m_movimentsValids[N_MOVIMENTS];
+    Posicio m_movimentActual [N_MOVIMENTS];
+    Posicio m_posicionValides[N_MOVIMENTS];
 };
 
 #endif // MOVIMENT_H
-
