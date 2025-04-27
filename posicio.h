@@ -3,6 +3,8 @@
 
 #include <string>
 #include <fstream>
+#include <sstream>
+
 using namespace std;
 
 const int N_FILES = 8;
@@ -29,7 +31,6 @@ private:
 };
 
 ifstream& operator>>(ifstream& fitxer, Posicio& posicio);
-ofstream& operator<<(ofstream& fitxer, const Posicio& posicio);
+ofstream& operator<<(ofstream& fitxer, Posicio& posicio);
 
 #endif // POSICIO_H
-
