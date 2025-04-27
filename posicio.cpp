@@ -1,4 +1,5 @@
 #include "posicio.h"
+#include "posicio.hpp"
 
 string Posicio::toString() const
 {
@@ -27,7 +28,7 @@ ifstream& operator>>(ifstream& fitxer, Posicio& posicio)
     return fitxer;
 }
 
-ofstream& operator<<(ofstream& fitxer, const Posicio& posicio)
+ofstream& operator<<(ofstream& fitxer, Posicio& posicio)
 {
     string posAux = posicio.toString();
     fitxer << posAux;
