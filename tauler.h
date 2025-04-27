@@ -2,6 +2,8 @@
 #define TAULER_H
 
 #include "posicio.h"
+#include "posicio.hpp"
+#include "fitxa.h"
 
 class Tauler
 {
@@ -13,7 +15,7 @@ public:
 	
 	void inicialitza(const string& nomFitxer);
 	void actualitzaMovimentsValids();
-	void getPosicionsPossibles(cont Posicio& origen, int& nPosicions, Posicio posicionsPossibles[]);
+	void getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[]);
 	bool mouFitxa(const Posicio& origen, const Posicio& desti);
 	string toString() const;
 
