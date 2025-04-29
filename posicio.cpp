@@ -1,5 +1,6 @@
 #include "posicio.hpp"
 
+//FET
 string Posicio::toString() const
 {
     string posicio = "a1";
@@ -8,17 +9,20 @@ string Posicio::toString() const
     return posicio;
 }
 
+//FET
 void Posicio::fromString(const string& pos)
 {
     m_fila = (N_FILES - 1) - (pos[1] - '1');
     m_columna = pos[0] - 'a';
 }
 
+//FET
 bool Posicio::operator==(const Posicio& posicio) const 
 {
     return m_fila == posicio.m_fila && m_columna == posicio.m_columna;
 }
 
+//FET
 istream& operator>>(istream& input, Posicio& posicio)
 {
     string posAux;
@@ -27,6 +31,7 @@ istream& operator>>(istream& input, Posicio& posicio)
     return input;
 }
 
+//FET
 ostream& operator<<(ostream& output, Posicio& posicio)
 {
     string posAux = posicio.toString();
