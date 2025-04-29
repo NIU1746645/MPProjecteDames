@@ -11,7 +11,6 @@ public:
 	void llegeixTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMNES]);
 	void escriuTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMNES]);
 
-
 	void inicialitza(const string& nomFitxer);
 	void actualitzaMovimentsValids();
 	void getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[]);
