@@ -1,7 +1,6 @@
-#include "tauler.h"	
 #include "tauler.hpp"
 
-void inicialitzaTauler(char tauler[N_FILES][N_COLUMNES])
+void Tauler::inicialitzaTauler(char tauler[N_FILES][N_COLUMNES])
 {
     for (int i = 0; i < N_FILES; i++)
     {
@@ -11,7 +10,8 @@ void inicialitzaTauler(char tauler[N_FILES][N_COLUMNES])
         }
     }
 }
-void llegeixTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMNES])
+
+void Tauler::llegeixTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMNES])
 {
     inicialitzaTauler(tauler);
     ifstream fitxer;
@@ -34,7 +34,7 @@ void llegeixTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMNES])
 
 }
 
-void escriuTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMNES])
+void Tauler::escriuTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMNES])
 {
     ofstream fitxer;
     fitxer.open(nomFitxer);
@@ -63,17 +63,17 @@ void escriuTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMNES])
     }
 }
 
-void inicialitza(const string& nomFitxer)
+void Tauler::inicialitza(const string& nomFitxer)
 {
 
 }
 
-void actualitzaMovimentsValids()
+void Tauler::actualitzaMovimentsValids()
 {
 
 }
 
-bool mouFitxa(const Posicio& origen, const Posicio& desti)
+bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 {
     return false;
 }
