@@ -26,7 +26,6 @@ public:
 
     bool operator==(const Posicio& posicio) const;
 
-
 private:
     int m_fila, m_columna;
 };
