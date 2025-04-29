@@ -3,8 +3,8 @@
 
 #include <string>
 #include <fstream>
-#include <iostream>
 #include <sstream>
+#include <iostream>
 
 using namespace std;
 
@@ -31,7 +31,7 @@ private:
     int m_fila, m_columna;
 };
 
-ifstream& operator>>(ifstream& fitxer, Posicio& posicio);
-ofstream& operator<<(ofstream& fitxer, Posicio& posicio);
+istream& operator>>(istream& input, Posicio& posicio);
+ostream& operator<<(ostream& output, Posicio& posicio);
 
 #endif // POSICIO_H
