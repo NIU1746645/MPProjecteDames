@@ -1,4 +1,3 @@
-#include "posicio.h"
 #include "posicio.hpp"
 
 string Posicio::toString() const
@@ -20,17 +19,17 @@ bool Posicio::operator==(const Posicio& posicio) const
     return m_fila == posicio.m_fila && m_columna == posicio.m_columna;
 }
 
-ifstream& operator>>(ifstream& fitxer, Posicio& posicio)
+istream& operator>>(istream& input, Posicio& posicio)
 {
     string posAux;
-    fitxer >> posAux;
+    input >> posAux;
     posicio.fromString(posAux);
-    return fitxer;
+    return input;
 }
 
-ofstream& operator<<(ofstream& fitxer, Posicio& posicio)
+ostream& operator<<(ostream& output, Posicio& posicio)
 {
     string posAux = posicio.toString();
-    fitxer << posAux;
-    return fitxer;
+    output << posAux;
+    return output;
 }
