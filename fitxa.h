@@ -1,7 +1,6 @@
 #ifndef FITXA_H
 #define FITXA_H
 
-#include "posicio.h"
 #include "posicio.hpp"
 
 typedef enum
