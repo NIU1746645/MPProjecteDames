@@ -1,7 +1,6 @@
 #ifndef MOVIMENT_H 
 #define MOVIMENT_H
 
-#include "posicio.h"
 #include "posicio.hpp"
 
 const int N_MOVIMENTS = 100;
