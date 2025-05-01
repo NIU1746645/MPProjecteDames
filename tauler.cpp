@@ -119,19 +119,20 @@ void Tauler::actualitzaMovimentsValids()
 //falta arreglar els breaks i returns
 bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 {
-	bool valid = false;
+    // Validacions basiques
+
     if (origen.getFila() < 0 || origen.getFila() >= N_FILES ||
         origen.getColumna() < 0 || origen.getColumna() >= N_COLUMNES ||
         desti.getFila() < 0 || desti.getFila() >= N_FILES ||
         desti.getColumna() < 0 || desti.getColumna() >= N_COLUMNES)
     {
-        valid = false;
+        return false;
     }
 
     Fitxa& fitxaOrigen = m_tauler[origen.getFila()][origen.getColumna()];
     if (fitxaOrigen.esBuida())
     {
-        valid = false;
+        return false;
     }
 
     // Comprovar si el moviment és vàlid
@@ -148,41 +149,55 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
             break;
         }
     }
-    if (!movimentValid) return false;
+    if (!movimentValid)
+        movimentValid = false;
 
     // Realitzar el moviment
     Fitxa fitxa = fitxaOrigen;
     fitxaOrigen = Fitxa(); // Buida la posició d'origen
 
-    // Comprovar si és una captura
-    if (abs(desti.getFila() - origen.getFila()) > 1 || abs(desti.getColumna() - origen.getColumna()) > 1) {
-        // És una captura, eliminar la fitxa saltada
-        int filaCaptura = origen.getFila() + (desti.getFila() - origen.getFila()) / 2;
-        int colCaptura = origen.getColumna() + (desti.getColumna() - origen.getColumna()) / 2;
-        m_tauler[filaCaptura][colCaptura] = Fitxa();
+    // Gestió de captures
+    int deltaFila = desti.getFila() - origen.getFila();
+    int deltaCol = desti.getColumna() - origen.getColumna();
+    int steps = max(abs(deltaFila), abs(deltaCol));
+
+    if (steps > 1) { // És una captura
+        int dirFila = deltaFila > 0 ? 1 : -1;
+        int dirCol = deltaCol > 0 ? 1 : -1;
+
+        for (int i = 1; i < steps; i++)
+        {
+            int fila = origen.getFila() + i * dirFila;
+            int col = origen.getColumna() + i * dirCol;
+            if (!m_tauler[fila][col].esBuida())
+            {
+                m_tauler[fila][col] = Fitxa(); // Elimina la fitxa capturada
+            }
+        }
     }
 
     // Comprovar promoció a dama
     if (fitxa.getTipus() == TIPUS_NORMAL)
     {
         if ((fitxa.getColor() == COLOR_NEGRE && desti.getFila() == N_FILES - 1) ||
-            (fitxa.getColor() == COLOR_BLANC && desti.getFila() == 0)) {
+            (fitxa.getColor() == COLOR_BLANC && desti.getFila() == 0))
+        {
             fitxa.setTipus(TIPUS_DAMA);
         }
     }
 
     m_tauler[desti.getFila()][desti.getColumna()] = fitxa;
     return true;
-
-    return valid;
 }
 
 //funciona correctament pero s'ha de millorar (treure breaks...)
-void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[]) {
+void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[])
+{
     nPosicions = 0;
     const Fitxa& fitxa = m_tauler[origen.getFila()][origen.getColumna()];
 
-    if (fitxa.esBuida()) return;
+    if (fitxa.esBuida())
+        return;
 
     bool hiHaCaptures = false;
 
@@ -190,39 +205,39 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     {
         // Comprovem captures per fitxes normals
         int direccio = (fitxa.getColor() == COLOR_NEGRE) ? 1 : -1;
-        
+
         int fila = origen.getFila();
-		int col = origen.getColumna();
-       /* do
-        {*/
-             for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
-             {
-                int filaIntermitja = fila + direccio;
-                int colIntermitja = col + deltaCol;
+        int col = origen.getColumna();
+        /* do
+         {*/
+        for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+        {
+            int filaIntermitja = fila + direccio;
+            int colIntermitja = col + deltaCol;
 
-                int filaDesti = fila + 2 * direccio;
-                int colDesti = col + 2 * deltaCol;
+            int filaDesti = fila + 2 * direccio;
+            int colDesti = col + 2 * deltaCol;
 
-                if (filaDesti >= 0 && filaDesti < N_FILES && colDesti >= 0 && colDesti < N_COLUMNES)
+            if (filaDesti >= 0 && filaDesti < N_FILES && colDesti >= 0 && colDesti < N_COLUMNES)
+            {
+                if (!m_tauler[filaIntermitja][colIntermitja].esBuida() &&
+                    m_tauler[filaIntermitja][colIntermitja].getColor() != fitxa.getColor() &&
+                    m_tauler[filaDesti][colDesti].esBuida())
                 {
-                    if (!m_tauler[filaIntermitja][colIntermitja].esBuida() &&
-                        m_tauler[filaIntermitja][colIntermitja].getColor() != fitxa.getColor() &&
-                        m_tauler[filaDesti][colDesti].esBuida())
-                    {
-                        hiHaCaptures = true;
-                        posicionsPossibles[nPosicions++] = Posicio(filaDesti, colDesti);
-						//// Comprovem si hi ha més captures possibles
-						//fila = filaDesti;
-						//col = colDesti;
-                    }
-                    else
-                    {
-						hiHaCaptures = false;
-                    }
+                    hiHaCaptures = true;
+                    posicionsPossibles[nPosicions++] = Posicio(filaDesti, colDesti);
+                    //// Comprovem si hi ha més captures possibles
+                    //fila = filaDesti;
+                    //col = colDesti;
+                }
+                else
+                {
+                    hiHaCaptures = false;
                 }
             }
-		//} while (hiHaCaptures == true && nPosicions < N_MOVIMENTS); // Comprovem captures seguides
-       
+        }
+        //} while (hiHaCaptures == true && nPosicions < N_MOVIMENTS); // Comprovem captures seguides
+
     }
     else
         if (fitxa.getTipus() == TIPUS_DAMA)
@@ -312,7 +327,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
                 }
             }
         }
-   
+
 }
 
 //FET
@@ -351,3 +366,4 @@ string Tauler::toString() const
     }
     return m_taulerString;
 }
+
