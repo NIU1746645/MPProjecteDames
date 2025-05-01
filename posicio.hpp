@@ -1,5 +1,5 @@
-#ifndef POSICIO_H
-#define POSICIO_H
+#ifndef POSICIO_HPP
+#define POSICIO_HPP
 
 #include <string>
 #include <fstream>
@@ -16,6 +16,7 @@ class Posicio
 public:
     Posicio() : m_fila(-1), m_columna(-1) {};
     Posicio(int fila, int columna) { m_fila = fila; m_columna = columna; };
+   
     int getFila() const { return m_fila; };
     int getColumna() const { return m_columna; };
     void setPosicio(int fila, int columna) { m_fila = fila; m_columna = columna; };
@@ -33,4 +34,4 @@ private:
 istream& operator>>(istream& input, Posicio& posicio);
 ostream& operator<<(ostream& output, Posicio& posicio);
 
-#endif // POSICIO_H
+#endif // POSICIO_HPP
