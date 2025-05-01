@@ -196,138 +196,160 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     nPosicions = 0;
     const Fitxa& fitxa = m_tauler[origen.getFila()][origen.getColumna()];
 
-    if (fitxa.esBuida())
-        return;
-
     bool hiHaCaptures = false;
+    Posicio mPendents[N_MOVIMENTS];
+	int nPendents = 0;
 
-    if (fitxa.getTipus() == TIPUS_NORMAL)
+    if (!fitxa.esBuida())
     {
-        // Comprovem captures per fitxes normals
-        int direccio = (fitxa.getColor() == COLOR_NEGRE) ? 1 : -1;
-
-        int fila = origen.getFila();
-        int col = origen.getColumna();
-        /* do
-         {*/
-        for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+        if (fitxa.getTipus() == TIPUS_NORMAL)
         {
-            int filaIntermitja = fila + direccio;
-            int colIntermitja = col + deltaCol;
+            // Comprovem captures per fitxes normals
+            int direccio = (fitxa.getColor() == COLOR_NEGRE) ? 1 : -1;
 
-            int filaDesti = fila + 2 * direccio;
-            int colDesti = col + 2 * deltaCol;
-
-            if (filaDesti >= 0 && filaDesti < N_FILES && colDesti >= 0 && colDesti < N_COLUMNES)
+            int fila = origen.getFila();
+            int col = origen.getColumna();
+            do
             {
-                if (!m_tauler[filaIntermitja][colIntermitja].esBuida() &&
-                    m_tauler[filaIntermitja][colIntermitja].getColor() != fitxa.getColor() &&
-                    m_tauler[filaDesti][colDesti].esBuida())
+                for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
                 {
-                    hiHaCaptures = true;
-                    posicionsPossibles[nPosicions++] = Posicio(filaDesti, colDesti);
-                    //// Comprovem si hi ha més captures possibles
-                    //fila = filaDesti;
-                    //col = colDesti;
+                    int filaIntermitja = fila + direccio;
+                    int colIntermitja = col + deltaCol;
+
+                    int filaDesti = fila + 2 * direccio;
+                    int colDesti = col + 2 * deltaCol;
+
+                    if (filaDesti >= 0 && filaDesti < N_FILES && colDesti >= 0 && colDesti < N_COLUMNES)
+                    {
+                        if (!m_tauler[filaIntermitja][colIntermitja].esBuida() &&
+                            m_tauler[filaIntermitja][colIntermitja].getColor() != fitxa.getColor() &&
+                            m_tauler[filaDesti][colDesti].esBuida())
+                        {
+                            hiHaCaptures = true;
+                            if (!cercaPosicio(posicionsPossibles, Posicio(filaDesti, colDesti)))
+							{
+								// Afegim la posició de destí a les possibles captures
+								posicionsPossibles[nPosicions++] = Posicio(filaDesti, colDesti);
+                                mPendents[nPendents++] = Posicio(filaDesti, colDesti);
+							}
+							
+                        }
+                    }
                 }
+
+				if (nPendents > 0)
+				{
+					fila = mPendents[--nPendents].getFila();
+					col = mPendents[nPendents].getColumna();
+				}
                 else
                 {
                     hiHaCaptures = false;
                 }
-            }
+            } while (hiHaCaptures == true && nPosicions < N_MOVIMENTS); // Comprovem captures seguides
+
         }
-        //} while (hiHaCaptures == true && nPosicions < N_MOVIMENTS); // Comprovem captures seguides
-
-    }
-    else
-        if (fitxa.getTipus() == TIPUS_DAMA)
-        {
-            // Comprovem captures per dames 
-            for (int deltaFila = -1; deltaFila <= 1; deltaFila += 2)
+        else
+            if (fitxa.getTipus() == TIPUS_DAMA)
             {
-                for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+                int fila = origen.getFila();
+                int col = origen.getColumna();
+                // Comprovem captures per dames 
+                do
                 {
-                    int fila = origen.getFila() + deltaFila;
-                    int col = origen.getColumna() + deltaCol;
-                    bool trobadaFitxaContraria = false;
-
-                    while (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
+                    for (int deltaFila = -1*N_FILES; deltaFila <= N_FILES; deltaFila += 2)
                     {
-                        if (!m_tauler[fila][col].esBuida())
+                        for (int deltaCol = -1*N_COLUMNES; deltaCol <= N_COLUMNES; deltaCol += 2)
                         {
-                            if (m_tauler[fila][col].getColor() == fitxa.getColor())
+                            int filaIntermitja = fila + deltaFila;
+                            int colIntermitja = col + deltaCol;
+
+                            int filaDesti = fila + 2 * deltaFila;
+                            int colDesti = col + 2 * deltaCol;
+
+                            bool trobadaFitxaContraria = false;
+
+                            while (filaIntermitja >= 0 && filaIntermitja < N_FILES && colIntermitja >= 0 && colIntermitja < N_COLUMNES)
                             {
-                                break; // Fitxa aliada, no podem saltar
+                                if (!m_tauler[filaIntermitja][colIntermitja].esBuida())
+                                {
+                                    if (m_tauler[filaIntermitja][colIntermitja].getColor() == fitxa.getColor())
+                                    {
+                                        break; // Fitxa aliada, no podem saltar
+                                    }
+                                    else
+                                        if (trobadaFitxaContraria)
+                                        {
+                                            break; // Ja hem trobat una fitxa contrària
+                                        }
+                                        else
+                                        {
+                                            trobadaFitxaContraria = true;
+                                            filaIntermitja += deltaFila;
+                                            colIntermitja += deltaCol;
+                                            continue;
+                                        }
+                                }
+
+                                if (trobadaFitxaContraria && m_tauler[filaIntermitja][colIntermitja].esBuida())
+                                {
+                                    hiHaCaptures = true;
+                                    posicionsPossibles[nPosicions++] = Posicio(filaIntermitja, colIntermitja);
+                                }
+
+                                filaIntermitja += deltaFila;
+                                colIntermitja += deltaCol;
                             }
-                            else
-                                if (trobadaFitxaContraria)
-                                {
-                                    break; // Ja hem trobat una fitxa contrària
-                                }
-                                else
-                                {
-                                    trobadaFitxaContraria = true;
-                                    fila += deltaFila;
-                                    col += deltaCol;
-                                    continue;
-                                }
                         }
-
-                        if (trobadaFitxaContraria && m_tauler[fila][col].esBuida())
-                        {
-                            hiHaCaptures = true;
-                            posicionsPossibles[nPosicions++] = Posicio(fila, col);
-                        }
-
-                        fila += deltaFila;
-                        col += deltaCol;
                     }
-                }
+                }while (hiHaCaptures == true && nPosicions < N_MOVIMENTS); // Comprovem captures seguides
+                
             }
-        }
+    
 
-    // Mirem els moviments normals
-    if (fitxa.getTipus() == TIPUS_NORMAL)
-    {
-        int direccio = (fitxa.getColor() == COLOR_NEGRE) ? 1 : -1;
-        int fila = origen.getFila() + direccio;
-
-        for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+        // Mirem els moviments normals
+        if (fitxa.getTipus() == TIPUS_NORMAL)
         {
-            int col = origen.getColumna() + deltaCol;
-            if (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
-            {
-                if (m_tauler[fila][col].esBuida())
-                {
-                    posicionsPossibles[nPosicions++] = Posicio(fila, col);
-                }
-            }
-        }
-    }
-    else
-        if (fitxa.getTipus() == TIPUS_DAMA)
-        {
-            // Moviments normals de dames
-            for (int deltaFila = -1; deltaFila <= 1; deltaFila += 2)
-            {
-                for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
-                {
-                    int fila = origen.getFila() + deltaFila;
-                    int col = origen.getColumna() + deltaCol;
+            int direccio = (fitxa.getColor() == COLOR_NEGRE) ? 1 : -1;
+            int fila = origen.getFila() + direccio;
 
-                    while (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
+            for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+            {
+                int col = origen.getColumna() + deltaCol;
+                if (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
+                {
+                    if (m_tauler[fila][col].esBuida())
                     {
-                        if (!m_tauler[fila][col].esBuida())
-                            break;
-
                         posicionsPossibles[nPosicions++] = Posicio(fila, col);
-                        fila += deltaFila;
-                        col += deltaCol;
                     }
                 }
             }
         }
+        else
+            if (fitxa.getTipus() == TIPUS_DAMA)
+            {
+                // Moviments normals de dames
+                for (int deltaFila = -1; deltaFila <= 1; deltaFila += 2)
+                {
+                    for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+                    {
+                        int fila = origen.getFila() + deltaFila;
+                        int col = origen.getColumna() + deltaCol;
 
+                        while (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
+                        {
+                            if (!m_tauler[fila][col].esBuida())
+                                break;
+
+                            posicionsPossibles[nPosicions++] = Posicio(fila, col);
+                            fila += deltaFila;
+                            col += deltaCol;
+                        }
+                    }
+                }
+            }
+
+    }
 }
 
 //FET
@@ -367,3 +389,18 @@ string Tauler::toString() const
     return m_taulerString;
 }
 
+bool Tauler::cercaPosicio(Posicio posicio[], Posicio novaPos)
+{
+    bool trobat = false;
+    int i = 0;
+
+    while (!trobat && i < N_MOVIMENTS)
+    {
+        if (posicio[i] == novaPos)
+        {
+            trobat = true;
+        }
+        i++;
+    }
+    return trobat;
+}
