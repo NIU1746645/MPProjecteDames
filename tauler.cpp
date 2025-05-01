@@ -119,16 +119,20 @@ void Tauler::actualitzaMovimentsValids()
 //falta arreglar els breaks i returns
 bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 {
+	bool valid = false;
     if (origen.getFila() < 0 || origen.getFila() >= N_FILES ||
         origen.getColumna() < 0 || origen.getColumna() >= N_COLUMNES ||
         desti.getFila() < 0 || desti.getFila() >= N_FILES ||
         desti.getColumna() < 0 || desti.getColumna() >= N_COLUMNES)
     {
-        return false;
+        valid = false;
     }
 
     Fitxa& fitxaOrigen = m_tauler[origen.getFila()][origen.getColumna()];
-    if (fitxaOrigen.esBuida()) return false;
+    if (fitxaOrigen.esBuida())
+    {
+        valid = false;
+    }
 
     // Comprovar si el moviment és vàlid
     int nPosicions;
@@ -169,6 +173,8 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 
     m_tauler[desti.getFila()][desti.getColumna()] = fitxa;
     return true;
+
+    return valid;
 }
 
 //funciona correctament pero s'ha de millorar (treure breaks...)
@@ -184,26 +190,39 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     {
         // Comprovem captures per fitxes normals
         int direccio = (fitxa.getColor() == COLOR_NEGRE) ? 1 : -1;
+        
+        int fila = origen.getFila();
+		int col = origen.getColumna();
+       /* do
+        {*/
+             for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+             {
+                int filaIntermitja = fila + direccio;
+                int colIntermitja = col + deltaCol;
 
-        for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
-        {
-            int filaIntermitja = origen.getFila() + direccio;
-            int colIntermitja = origen.getColumna() + deltaCol;
+                int filaDesti = fila + 2 * direccio;
+                int colDesti = col + 2 * deltaCol;
 
-            int filaDesti = origen.getFila() + 2 * direccio;
-            int colDesti = origen.getColumna() + 2 * deltaCol;
-
-            if (filaDesti >= 0 && filaDesti < N_FILES && colDesti >= 0 && colDesti < N_COLUMNES)
-            {
-                if (!m_tauler[filaIntermitja][colIntermitja].esBuida() &&
-                    m_tauler[filaIntermitja][colIntermitja].getColor() != fitxa.getColor() &&
-                    m_tauler[filaDesti][colDesti].esBuida())
+                if (filaDesti >= 0 && filaDesti < N_FILES && colDesti >= 0 && colDesti < N_COLUMNES)
                 {
-                    hiHaCaptures = true;
-                    posicionsPossibles[nPosicions++] = Posicio(filaDesti, colDesti);
+                    if (!m_tauler[filaIntermitja][colIntermitja].esBuida() &&
+                        m_tauler[filaIntermitja][colIntermitja].getColor() != fitxa.getColor() &&
+                        m_tauler[filaDesti][colDesti].esBuida())
+                    {
+                        hiHaCaptures = true;
+                        posicionsPossibles[nPosicions++] = Posicio(filaDesti, colDesti);
+						//// Comprovem si hi ha més captures possibles
+						//fila = filaDesti;
+						//col = colDesti;
+                    }
+                    else
+                    {
+						hiHaCaptures = false;
+                    }
                 }
             }
-        }
+		//} while (hiHaCaptures == true && nPosicions < N_MOVIMENTS); // Comprovem captures seguides
+       
     }
     else
         if (fitxa.getTipus() == TIPUS_DAMA)
@@ -252,50 +271,48 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
             }
         }
 
-    // Si no hi ha captures, mirem els moviments normals
-    if (!hiHaCaptures)
+    // Mirem els moviments normals
+    if (fitxa.getTipus() == TIPUS_NORMAL)
     {
-        if (fitxa.getTipus() == TIPUS_NORMAL)
-        {
-            int direccio = (fitxa.getColor() == COLOR_NEGRE) ? 1 : -1;
-            int fila = origen.getFila() + direccio;
+        int direccio = (fitxa.getColor() == COLOR_NEGRE) ? 1 : -1;
+        int fila = origen.getFila() + direccio;
 
-            for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+        for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+        {
+            int col = origen.getColumna() + deltaCol;
+            if (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
             {
-                int col = origen.getColumna() + deltaCol;
-                if (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
+                if (m_tauler[fila][col].esBuida())
                 {
-                    if (m_tauler[fila][col].esBuida())
+                    posicionsPossibles[nPosicions++] = Posicio(fila, col);
+                }
+            }
+        }
+    }
+    else
+        if (fitxa.getTipus() == TIPUS_DAMA)
+        {
+            // Moviments normals de dames
+            for (int deltaFila = -1; deltaFila <= 1; deltaFila += 2)
+            {
+                for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+                {
+                    int fila = origen.getFila() + deltaFila;
+                    int col = origen.getColumna() + deltaCol;
+
+                    while (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
                     {
+                        if (!m_tauler[fila][col].esBuida())
+                            break;
+
                         posicionsPossibles[nPosicions++] = Posicio(fila, col);
+                        fila += deltaFila;
+                        col += deltaCol;
                     }
                 }
             }
         }
-        else
-            if (fitxa.getTipus() == TIPUS_DAMA)
-            {
-                // Moviments normals de dames
-                for (int deltaFila = -1; deltaFila <= 1; deltaFila += 2)
-                {
-                    for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
-                    {
-                        int fila = origen.getFila() + deltaFila;
-                        int col = origen.getColumna() + deltaCol;
-
-                        while (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
-                        {
-                            if (!m_tauler[fila][col].esBuida())
-                                break;
-
-                            posicionsPossibles[nPosicions++] = Posicio(fila, col);
-                            fila += deltaFila;
-                            col += deltaCol;
-                        }
-                    }
-                }
-            }
-    }
+   
 }
 
 //FET
