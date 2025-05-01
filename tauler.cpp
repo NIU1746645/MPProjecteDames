@@ -95,6 +95,7 @@ void Tauler::inicialitza(const string& nomFitxer)
             //tractem dades
 			posicio.fromString(pos);
 			m_tauler[posicio.getFila()][posicio.getColumna()].fromChar(fitxa);
+			m_tauler[posicio.getFila()][posicio.getColumna()] = fitxa;
         }
         fitxer.close();
     }
@@ -107,7 +108,7 @@ void Tauler::inicialitza(const string& nomFitxer)
 
 void Tauler::actualitzaMovimentsValids()
 {
-	//Implementar la lògica per actualitzar els moviments vàlids
+    //Implementar la lògica per actualitzar els moviments vàlids
 }
 
 bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
@@ -117,30 +118,59 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
     /*bool mValid = false;
 	m_tauler[origen.getColumna()][origen.getColumna()].setFitxa();
     return mValid;*/
+    return false;
 }
 
-//FET
+//FET crec
 void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[])
 {
     nPosicions = 0;
     const Fitxa& fitxa = m_tauler[origen.getFila()][origen.getColumna()];
-
-    if (fitxa.getTipus() == TIPUS_NORMAL)
+	
+    switch (fitxa.getTipus())
+    {
+    case TIPUS_NORMAL:
     {
         int direccio = (fitxa.getColor() == COLOR_NEGRE) ? 1 : -1;
         int fila = origen.getFila() + direccio;
-
         for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
         {
             int col = origen.getColumna() + deltaCol;
             if (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
             {
-                if (m_tauler[fila][col].esBuida())
+                if (m_tauler[fila][col].esBuida() &&nPosicions < N_MOVIMENTS)
                 {
                     posicionsPossibles[nPosicions++] = Posicio(fila, col);
                 }
             }
         }
+        break;
+    }
+    case TIPUS_DAMA:
+    { 
+        for (int deltaDir = -1; deltaDir <= 1; deltaDir += 2)
+        {
+            int direccio = deltaDir;
+            for (int deltaFila = -1; deltaFila <= 1; deltaFila += 2)
+            {
+                int fila = origen.getFila() + direccio;
+                for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
+                {
+                    int col = origen.getColumna() + deltaCol;
+                    if (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
+                    {
+                        if (m_tauler[fila][col].esBuida() && nPosicions < N_MOVIMENTS)
+                        {
+                            posicionsPossibles[nPosicions++] = Posicio(fila, col);
+                        }
+                    }
+                }
+            }
+        }
+        break;
+	}
+	default:
+		break;
     }
 }
 
