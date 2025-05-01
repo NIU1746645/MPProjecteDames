@@ -14,6 +14,13 @@ void Posicio::fromString(const string& pos)
 {
     m_fila = (N_FILES - 1) - (pos[1] - '1');
     m_columna = pos[0] - 'a';
+
+	//Comprovar si la posicio es valida
+    if (m_fila < 0 || m_fila >= N_FILES || m_columna < 0 || m_columna >= N_COLUMNES)
+    {
+        m_fila = -1;
+        m_columna = -1;
+    }
 }
 
 //FET
