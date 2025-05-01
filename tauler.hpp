@@ -21,4 +21,4 @@ private:
 	Fitxa m_tauler[N_FILES][N_COLUMNES];
 };
 
-#endif // TAULER_H 
+#endif // TAULER_HPP

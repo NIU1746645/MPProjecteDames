@@ -7,9 +7,9 @@ const int N_MOVIMENTS = 100;
 
 typedef enum
 {
-	MOV_EMPTY, //Per defecte i s'enten que no pot fer cap moviment
-    MOV_AVANÇA, //No se si avança portara problemes i seria millor avanca
-	MOV_MATA, //
+    MOV_EMPTY, //Per defecte i s'enten que no pot fer cap moviment
+    MOV_AVANCA, //avança porta problemes, per aixo l'hem anomenat avanca
+    MOV_MATA, //
 } TipusMoviment;
 
 class Moviment
@@ -25,11 +25,11 @@ public:
     void reinicia();
     void mostra() const;
     void afegirMoviment(const Posicio& moviment);
-	void afegirCaptura(const Posicio& captura);
-	void setTipusMoviment(int index, TipusMoviment tipus);
-	TipusMoviment getTipusMoviment(int index) const;
-	Posicio getMoviment(int index) const;
-	Posicio getCaptura(int index) const;
+    void afegirCaptura(const Posicio& captura);
+    void setTipusMoviment(int index, TipusMoviment tipus);
+    TipusMoviment getTipusMoviment(int index) const;
+    Posicio getMoviment(int index) const;
+    Posicio getCaptura(int index) const;
 
     int getNumMoviments() const { return m_numMoviments; }
     int getNumaptures() const { return m_numCaptures; }
@@ -51,4 +51,5 @@ private:
 };
 
 #endif // MOVIMENT_H
+
 
