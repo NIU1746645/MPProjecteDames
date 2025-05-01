@@ -32,18 +32,18 @@ public:
     char toChar() const;
     void fromChar(char c);
 
-    void inicialitzaMovimentsValids(const Moviment& pos);
-    void inicialitzaMovimentsPendents(const Moviment& pos);
-    void inicialitzaMovimentActual(const Moviment& pos);
-    void recuperaPosicionsValides(const Moviment& pos);
+    //void inicialitzaMovimentsValids(const Moviment& pos);
+    //void inicialitzaMovimentsPendents(const Moviment& pos);
+    //void inicialitzaMovimentActual(const Moviment& pos);
+    //void recuperaPosicionsValides(const Moviment& pos);
 
 private:
     TipusFitxa m_tipus;
     ColorFitxa m_color;
-    Moviment m_movimentsValids[N_MOVIMENTS];
-    Moviment m_movimentsPendents[N_MOVIMENTS];
-    Moviment m_movimentActual[N_MOVIMENTS];
-    Moviment m_posicionsValides[N_MOVIMENTS];
+    //Moviment m_movimentsValids[N_MOVIMENTS];
+    //Moviment m_movimentsPendents[N_MOVIMENTS];
+    //Moviment m_movimentActual[N_MOVIMENTS];
+    //Moviment m_posicionsValides[N_MOVIMENTS];
 };
 
 #endif // FITXA_H
