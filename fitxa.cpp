@@ -1,5 +1,6 @@
 #include "fitxa.h"
 
+//FET
 char Fitxa::toChar() const
 {
     char tornar = ' ';
@@ -28,6 +29,7 @@ char Fitxa::toChar() const
     return tornar;
 }
 
+//FET
 void Fitxa::fromChar(char c)
 {
     switch (c)
@@ -64,3 +66,23 @@ void Fitxa::fromChar(char c)
         break;
     }
 }
+
+void Fitxa::inicialitzaMovimentsValids(const Moviment& pos)
+{
+
+};
+
+void Fitxa::inicialitzaMovimentsPendents(const Moviment& pos)
+{
+
+};
+
+void Fitxa::inicialitzaMovimentActual(const Moviment& pos)
+{
+
+};
+
+void Fitxa::recuperaPosicionsValides(const Moviment& pos)
+{
+
+};
