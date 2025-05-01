@@ -1,4 +1,4 @@
-#include "moviment.hpp"
+#include "moviment.h"
 #include <iostream>
 
 using namespace std;
@@ -30,7 +30,7 @@ void Moviment::mostra() const
 
     if (m_numMoviments > 0)
     {
-        cout << "Posicions intermèdies: ";
+        cout << "Posicions intermÃ¨dies: ";
         for (int i = 0; i < m_numMoviments; ++i)
         {
             m_movimentsValids[i].mostra();
@@ -89,7 +89,7 @@ void Moviment::setTipusMoviment(int index, TipusMoviment tipus)
 
 TipusMoviment Moviment::getTipusMoviment(int index) const
 {
-    TipusMoviment tipus = MOV_AVANÇA;
+    TipusMoviment tipus = MOV_EMPTY; //Abans hi havia mov_avanÃ§a
     bool indexValid = (index >= 0 && index < N_MOVIMENTS);
     if (indexValid)
     {
@@ -119,5 +119,4 @@ Posicio Moviment::getCaptura(int index) const
     }
     return posicio;
 }
-
 
