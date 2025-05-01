@@ -196,7 +196,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     nPosicions = 0;
     const Fitxa& fitxa = m_tauler[origen.getFila()][origen.getColumna()];
 
-    bool hiHaCaptures = false;
+    bool pendents = false;
     Posicio mPendents[N_MOVIMENTS];
 	int nPendents = 0;
 
@@ -225,7 +225,6 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
                             m_tauler[filaIntermitja][colIntermitja].getColor() != fitxa.getColor() &&
                             m_tauler[filaDesti][colDesti].esBuida())
                         {
-                            hiHaCaptures = true;
                             if (!cercaPosicio(posicionsPossibles, Posicio(filaDesti, colDesti)))
 							{
 								// Afegim la posició de destí a les possibles captures
@@ -236,17 +235,17 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
                         }
                     }
                 }
-
 				if (nPendents > 0)
 				{
 					fila = mPendents[--nPendents].getFila();
 					col = mPendents[nPendents].getColumna();
+                    pendents = true;
 				}
                 else
                 {
-                    hiHaCaptures = false;
+                    pendents = false;
                 }
-            } while (hiHaCaptures == true && nPosicions < N_MOVIMENTS); // Comprovem captures seguides
+            } while (pendents == true && nPosicions < N_MOVIMENTS); // Comprovem captures seguides
 
         }
         else
@@ -257,9 +256,9 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
                 // Comprovem captures per dames 
                 do
                 {
-                    for (int deltaFila = -1*N_FILES; deltaFila <= N_FILES; deltaFila += 2)
-                    {
-                        for (int deltaCol = -1*N_COLUMNES; deltaCol <= N_COLUMNES; deltaCol += 2)
+                    for (int deltaFila = -1; deltaFila <= 1; deltaFila += 2)
+                    { 
+                        for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
                         {
                             int filaIntermitja = fila + deltaFila;
                             int colIntermitja = col + deltaCol;
@@ -267,42 +266,44 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
                             int filaDesti = fila + 2 * deltaFila;
                             int colDesti = col + 2 * deltaCol;
 
-                            bool trobadaFitxaContraria = false;
-
-                            while (filaIntermitja >= 0 && filaIntermitja < N_FILES && colIntermitja >= 0 && colIntermitja < N_COLUMNES)
+                            
+                            bool pendents2 = true;
+                            while (filaDesti >= 0 && filaDesti < N_FILES && colDesti >= 0 && colDesti < N_COLUMNES && pendents2)
                             {
-                                if (!m_tauler[filaIntermitja][colIntermitja].esBuida())
+                                if ((!m_tauler[filaIntermitja][colIntermitja].esBuida() &&
+                                    m_tauler[filaIntermitja][colIntermitja].getColor() != fitxa.getColor() &&
+                                    m_tauler[filaDesti][colDesti].esBuida()))
                                 {
-                                    if (m_tauler[filaIntermitja][colIntermitja].getColor() == fitxa.getColor())
+                                    if (!cercaPosicio(posicionsPossibles, Posicio(filaDesti, colDesti)))
                                     {
-                                        break; // Fitxa aliada, no podem saltar
+                                        // Afegim la posicio de desti a les possibles captures
+                                        posicionsPossibles[nPosicions++] = Posicio(filaDesti, colDesti);
+                                        mPendents[nPendents++] = Posicio(filaDesti, colDesti);
+                                        filaIntermitja += deltaFila;
+                                        colIntermitja += deltaCol;
+                                        filaDesti += deltaFila;
+                                        colDesti += deltaCol;
                                     }
                                     else
-                                        if (trobadaFitxaContraria)
-                                        {
-                                            break; // Ja hem trobat una fitxa contrària
-                                        }
-                                        else
-                                        {
-                                            trobadaFitxaContraria = true;
-                                            filaIntermitja += deltaFila;
-                                            colIntermitja += deltaCol;
-                                            continue;
-                                        }
+                                        pendents2 = false;
                                 }
-
-                                if (trobadaFitxaContraria && m_tauler[filaIntermitja][colIntermitja].esBuida())
-                                {
-                                    hiHaCaptures = true;
-                                    posicionsPossibles[nPosicions++] = Posicio(filaIntermitja, colIntermitja);
-                                }
-
-                                filaIntermitja += deltaFila;
-                                colIntermitja += deltaCol;
+                                else
+                                    pendents2 = false;
                             }
                         }
                     }
-                }while (hiHaCaptures == true && nPosicions < N_MOVIMENTS); // Comprovem captures seguides
+                    if (nPendents > 0)
+                    {
+                        fila = mPendents[--nPendents].getFila();
+                        col = mPendents[nPendents].getColumna();
+                        pendents = true;
+                    }
+                    else
+                    {
+                        pendents = false;
+                    }
+
+                } while (pendents == true && nPosicions < N_MOVIMENTS); // Comprovem captures seguides
                 
             }
     
@@ -336,14 +337,27 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
                         int fila = origen.getFila() + deltaFila;
                         int col = origen.getColumna() + deltaCol;
 
-                        while (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
+                        /*if (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES)
                         {
-                            if (!m_tauler[fila][col].esBuida())
-                                break;
+                            if (m_tauler[fila][col].esBuida())
+                            {
+                                posicionsPossibles[nPosicions++] = Posicio(fila, col);
+                            }
+                        }*/
 
-                            posicionsPossibles[nPosicions++] = Posicio(fila, col);
-                            fila += deltaFila;
-                            col += deltaCol;
+						bool fitxaTrobada = false;
+                        while (fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES && !fitxaTrobada)
+                        {
+                            if (m_tauler[fila][col].esBuida())
+                            {
+                                posicionsPossibles[nPosicions++] = Posicio(fila, col);
+                                fila += deltaFila;
+                                col += deltaCol;
+                            }
+                            else
+                                fitxaTrobada = true;
+                            
+                            
                         }
                     }
                 }
