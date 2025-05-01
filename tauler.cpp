@@ -30,6 +30,7 @@ void Tauler::llegeixTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUM
             fitxer >> posicio;
             //tractem dades
             tauler[posicio.getFila()][posicio.getColumna()] = tipusFitxa;
+
         }
 
         fitxer.close();
@@ -39,7 +40,6 @@ void Tauler::llegeixTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUM
         cout << "Error: No s'ha pogut obrir el fitxer " << nomFitxer << endl;
         return;
     }
-
 }
 
 //FET
@@ -67,7 +67,6 @@ void Tauler::escriuTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMN
                 }
             }
         }
-
         fitxer.close();
     }
 	else //COMPROVACIÓ D'OBERTURA DE FITXER
@@ -80,6 +79,12 @@ void Tauler::escriuTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMN
 //Assegurar de que funcioni be
 void Tauler::inicialitza(const string& nomFitxer)
 {
+    for (int i = 0; i < N_FILES; i++) {
+        for (int j = 0; j < N_COLUMNES; j++) {
+            m_tauler[i][j].fromChar(' ');
+        }
+    }
+
     ifstream fitxer;
     fitxer.open(nomFitxer);
 
@@ -93,9 +98,9 @@ void Tauler::inicialitza(const string& nomFitxer)
             fitxer >> fitxa;
             fitxer >> pos;
             //tractem dades
+
 			posicio.fromString(pos);
-			m_tauler[posicio.getFila()][posicio.getColumna()].fromChar(fitxa);
-			m_tauler[posicio.getFila()][posicio.getColumna()] = fitxa;
+            m_tauler[posicio.getFila()][posicio.getColumna()].fromChar(fitxa);
         }
         fitxer.close();
     }
@@ -127,9 +132,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     nPosicions = 0;
     const Fitxa& fitxa = m_tauler[origen.getFila()][origen.getColumna()];
 	
-    switch (fitxa.getTipus())
-    {
-    case TIPUS_NORMAL:
+    if (fitxa.getTipus() == TIPUS_NORMAL)
     {
         int direccio = (fitxa.getColor() == COLOR_NEGRE) ? 1 : -1;
         int fila = origen.getFila() + direccio;
@@ -144,16 +147,15 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
                 }
             }
         }
-        break;
     }
-    case TIPUS_DAMA:
-    { 
-        for (int deltaDir = -1; deltaDir <= 1; deltaDir += 2)
+    else if (fitxa.getTipus() == TIPUS_DAMA)
+    {
+        /*for (int deltaDir = -1; deltaDir <= 1; deltaDir += 2)
         {
-            int direccio = deltaDir;
+            int direccio = deltaDir;*/
             for (int deltaFila = -1; deltaFila <= 1; deltaFila += 2)
             {
-                int fila = origen.getFila() + direccio;
+                int fila = origen.getFila() + deltaFila;
                 for (int deltaCol = -1; deltaCol <= 1; deltaCol += 2)
                 {
                     int col = origen.getColumna() + deltaCol;
@@ -166,16 +168,43 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
                     }
                 }
             }
-        }
-        break;
-	}
-	default:
-		break;
+       /* }*/
     }
 }
 
 //FET
 string Tauler::toString() const
 {
-    return "";
+	string m_taulerString;
+
+    char num = 8;
+
+    for (int i = 0; i < N_FILES; i++)
+    {
+        m_taulerString += to_string(num);
+        m_taulerString += ':';
+		m_taulerString += " ";
+        num--;
+            
+        for (int j = 0; j < N_COLUMNES; j++)
+        {
+			
+            char c = m_tauler[i][j].toChar();
+            if (c == ' ')
+                m_taulerString += "_";
+            else
+                m_taulerString += c;
+
+			m_taulerString += " ";
+        }
+
+		m_taulerString += "\n";
+    }
+	m_taulerString += "  ";
+	for (int i = 0; i < N_COLUMNES; i++)
+	{
+		m_taulerString += " ";
+		m_taulerString += 'a' + i;
+	}
+    return m_taulerString;
 }
