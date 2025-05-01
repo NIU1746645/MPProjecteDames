@@ -8,7 +8,7 @@ typedef enum
 {
     TIPUS_NORMAL,
     TIPUS_DAMA,
-    TIPUS_EMPTY
+    TIPUS_EMPTY //posicio buida
 } TipusFitxa;
 
 typedef enum

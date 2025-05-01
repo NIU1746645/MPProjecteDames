@@ -30,7 +30,7 @@ void Moviment::mostra() const
 
     if (m_numMoviments > 0)
     {
-        cout << "Posicions intermèdies: ";
+        cout << "Posicions intermedies: ";
         for (int i = 0; i < m_numMoviments; ++i)
         {
             m_movimentsValids[i].mostra();
