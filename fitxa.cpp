@@ -13,9 +13,9 @@ char Fitxa::toChar() const
 
     case TIPUS_NORMAL:
         if (m_color == COLOR_BLANC)
-            tornar = 'B';
+            tornar = 'O';
         else
-            tornar = 'N';
+            tornar = 'X';
         break;
 
     case TIPUS_DAMA:
@@ -40,12 +40,12 @@ void Fitxa::fromChar(char c)
         m_color = COLOR_BLANC;
         break;
 
-    case 'B':
+    case 'O':
         m_tipus = TIPUS_NORMAL;
         m_color = COLOR_BLANC;
         break;
 
-    case 'N':
+    case 'X':
         m_tipus = TIPUS_NORMAL;
         m_color = COLOR_NEGRE;
         break;
@@ -66,23 +66,3 @@ void Fitxa::fromChar(char c)
         break;
     }
 }
-
-void Fitxa::inicialitzaMovimentsValids(const Moviment& pos)
-{
-
-};
-
-void Fitxa::inicialitzaMovimentsPendents(const Moviment& pos)
-{
-
-};
-
-void Fitxa::inicialitzaMovimentActual(const Moviment& pos)
-{
-
-};
-
-void Fitxa::recuperaPosicionsValides(const Moviment& pos)
-{
-
-};
