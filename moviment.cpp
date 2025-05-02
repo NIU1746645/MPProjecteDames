@@ -13,6 +13,7 @@ bool Moviment::esValid() const
     return valid;
 }
 
+//tornar a començar un moviment nou
 void Moviment::reinicia()
 {
     m_numMoviments = 0;
@@ -34,7 +35,7 @@ void Moviment::mostra() const
         for (int i = 0; i < m_numMoviments; ++i)
         {
             m_movimentsValids[i].mostra();
-            if (i < m_numMoviments - 1)
+            if (i < m_numMoviments - 1) //escrivim -> si no es l'ultim
             {
                 cout << " -> ";
             }
@@ -57,6 +58,7 @@ void Moviment::mostra() const
     }
 }
 
+//afegim posicio nova al moviment
 void Moviment::afegirMoviment(const Posicio& moviment)
 {
     bool espaiDisponible = (m_numMoviments < N_MOVIMENTS);
@@ -74,7 +76,7 @@ void Moviment::afegirCaptura(const Posicio& captura)
     {
         m_captures[m_numCaptures] = captura;
         m_numCaptures++;
-        m_FitxesMata++;
+        m_FitxesMata++; //incrementa fitxes mortes
     }
 }
 
@@ -101,7 +103,7 @@ TipusMoviment Moviment::getTipusMoviment(int index) const
 Posicio Moviment::getMoviment(int index) const
 {
     Posicio posicio;
-    bool indexValid = (index >= 0 && index < m_numMoviments);
+	bool indexValid = (index >= 0 && index < m_numMoviments); //sino retornem posicio buida
     if (indexValid)
     {
         posicio = m_movimentsValids[index];
