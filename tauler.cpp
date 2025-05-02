@@ -1,6 +1,6 @@
 #include "tauler.hpp"
 
-//REVISIO
+//omplir el taulell amb espais buits
 void Tauler::inicialitzaTauler(char tauler[N_FILES][N_COLUMNES])
 {
     for (int i = 0; i < N_FILES; i++)
@@ -13,7 +13,7 @@ void Tauler::inicialitzaTauler(char tauler[N_FILES][N_COLUMNES])
     }
 }
 
-//REVISIO
+//llegim posicions fitxes
 void Tauler::llegeixTauler(const string& nomFitxer, char tauler[N_FILES][N_COLUMNES])
 {
     inicialitzaTauler(tauler);
@@ -119,7 +119,7 @@ void Tauler::actualitzaMovimentsValids()
 //s'ha d'acabar d'arreglar
 bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 {
-    // Validacions basiques
+    // comprovem que origen i desti estiguin dins del tauler
 
     if (origen.getFila() < 0 || origen.getFila() >= N_FILES ||
         origen.getColumna() < 0 || origen.getColumna() >= N_COLUMNES ||
