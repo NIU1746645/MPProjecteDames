@@ -13,16 +13,16 @@ char Fitxa::toChar() const
 
     case TIPUS_NORMAL:
         if (m_color == COLOR_BLANC)
-            tornar = 'O';
+            tornar = 'O'; //color blanc
         else
-            tornar = 'X';
+            tornar = 'X'; //color negre
         break;
 
     case TIPUS_DAMA:
         if (m_color == COLOR_BLANC)
-            tornar = 'D';
+            tornar = 'D'; //dama blanca
         else
-            tornar = 'R';
+            tornar = 'R'; //dama negra
         break;
     }
 
