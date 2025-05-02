@@ -44,8 +44,8 @@ private:
     Posicio m_movimentsValids[N_MOVIMENTS];
     Posicio m_movimentActual[N_MOVIMENTS];
     TipusMoviment m_tipusMoviment[N_MOVIMENTS]; //Si mata o avança
-    int m_FitxesMata;
     //Saber quin tipus de fitxa mata
+    int m_FitxesMata;
     Posicio m_posicionValides[N_MOVIMENTS];
     Posicio m_captures[N_MOVIMENTS];
 };

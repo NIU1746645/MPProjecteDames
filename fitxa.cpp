@@ -1,6 +1,5 @@
 #include "fitxa.h"
 
-//FET
 char Fitxa::toChar() const
 {
     char tornar = ' ';
@@ -29,7 +28,6 @@ char Fitxa::toChar() const
     return tornar;
 }
 
-//FET
 void Fitxa::fromChar(char c)
 {
     switch (c)

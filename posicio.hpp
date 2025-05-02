@@ -14,17 +14,18 @@ const int N_COLUMNES = 8;
 class Posicio
 {
 public:
-    Posicio() : m_fila(-1), m_columna(-1) {};
-    Posicio(int fila, int columna) { m_fila = fila; m_columna = columna; };
-    int getFila() const { return m_fila; };
-    int getColumna() const { return m_columna; };
-    void setPosicio(int fila, int columna) { m_fila = fila; m_columna = columna; };
+    Posicio() : m_fila(-1), m_columna(-1) {}
+    Posicio(int fila, int columna) { m_fila = fila; m_columna = columna; }
+
+    int getFila() const { return m_fila; }
+    int getColumna() const { return m_columna; }
+    void setPosicio(int fila, int columna) { m_fila = fila; m_columna = columna; }
+
     string toString() const;
     void fromString(const string& pos);
-    void mostra() const { cout << m_columna << m_fila; };
+    void mostra() const { cout << m_columna << m_fila; }
 
     Posicio(const string& posicio) { fromString(posicio); }
-
     bool operator==(const Posicio& posicio) const;
 
 private:

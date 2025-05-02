@@ -6,7 +6,6 @@ exemple:
   "a1" -> columna = 'a' - 'a' = 0 i fila = (8-1) - (1-1) = 7
 */
 
-//FET
 string Posicio::toString() const
 {
     string posicio = "a1";
@@ -35,7 +34,6 @@ bool Posicio::operator==(const Posicio& posicio) const
     return m_fila == posicio.m_fila && m_columna == posicio.m_columna;
 }
 
-//FET
 istream& operator>>(istream& input, Posicio& posicio)
 {
     string posAux;
@@ -44,7 +42,6 @@ istream& operator>>(istream& input, Posicio& posicio)
     return input;
 }
 
-//FET
 ostream& operator<<(ostream& output, Posicio& posicio)
 {
     string posAux = posicio.toString();

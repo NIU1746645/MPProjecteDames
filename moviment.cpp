@@ -91,7 +91,7 @@ void Moviment::setTipusMoviment(int index, TipusMoviment tipus)
 
 TipusMoviment Moviment::getTipusMoviment(int index) const
 {
-    TipusMoviment tipus = MOV_EMPTY; //Abans hi havia mov_avança
+    TipusMoviment tipus = MOV_EMPTY; 
     bool indexValid = (index >= 0 && index < N_MOVIMENTS);
     if (indexValid)
     {
