@@ -26,7 +26,7 @@ public:
     void mostra() const;
     void afegirMoviment(const Posicio& moviment);
     void afegirCaptura(const Posicio& captura);
-    void setTipusMoviment(int index, TipusMoviment tipus);
+    void setTipusMoviment(int index, TipusMovment tipus);
     TipusMoviment getTipusMoviment(int index) const;
     Posicio getMoviment(int index) const;
     Posicio getCaptura(int index) const;

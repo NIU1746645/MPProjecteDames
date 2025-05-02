@@ -116,7 +116,7 @@ void Tauler::actualitzaMovimentsValids()
     //Implementar la lògica per actualitzar els moviments vàlids
 }
 
-//falta arreglar els breaks i returns
+//s'ha d'acabar d'arreglar
 bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 {
     // Validacions basiques
@@ -190,7 +190,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
     return true;
 }
 
-//funciona correctament pero s'ha de millorar (treure breaks...)
+//permet que les fitxes vagin enrere, s'ha de mirar
 void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[])
 {
     nPosicions = 0;
