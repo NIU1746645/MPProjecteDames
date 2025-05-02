@@ -259,28 +259,6 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
                             else
                                 fitxaTrobada = true;
                         }
-                        ////Potser aquest switch case no cal
-                        //nPossibles = 0; // Reiniciem el contador de possibles captures
-
-                        //switch (deltaFila)
-                        //{
-                        //case -1:
-                        //    nPossibles = 0;
-                        //    break;
-                        //case 1:
-                        //    nPossibles = 2;
-                        //    break;
-                        //}
-
-                        //switch (deltaCol)
-                        //{
-                        //case -1:
-                        //    nPossibles += 0;
-                        //    break;
-                        //case 1:
-                        //    nPossibles += 1;
-                        //    break;
-                        //}
 
 						pPossibles[nPossibles++] = Posicio(fila - deltaFila, col - deltaCol); //Nomes pot tenir 4 posicions possibles abans
                         //Abans no hagi de saltar o menjar alguna fitxa. Llavors, en aquest array, recopilem les opcions 
@@ -321,11 +299,12 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
 								// Afegim la posicio de desti a les possibles captures
 								posicionsPossibles[nPosicions++] = Posicio(filaDesti, colDesti);
                                 mPendents[nPendents++] = Posicio(filaDesti, colDesti);
-							}
+                            }
 							
                         }
                     }
                 }
+
 				if (nPendents > 0)
 				{
                     nPendents--;
@@ -387,10 +366,6 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
                                             // Afegim la posicio de desti a les possibles captures
                                             posicionsPossibles[nPosicions++] = Posicio(filaDesti, colDesti);
                                             mPendents[nPendents++] = Posicio(filaDesti, colDesti);
-                                            /*filaIntermitja += deltaFila;
-                                            colIntermitja += deltaCol;
-                                            filaDesti += deltaFila;
-                                            colDesti += deltaCol;*/
                                         }
                                         else
                                             pendents2 = false;
