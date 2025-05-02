@@ -1,5 +1,11 @@
 #include "posicio.hpp"
 
+/*
+Hem de convertir "a1" , "h6" en fila i columna.
+exemple: 
+  "a1" -> columna = 'a' - 'a' = 0 i fila = (8-1) - (1-1) = 7
+*/
+
 //FET
 string Posicio::toString() const
 {
@@ -9,7 +15,7 @@ string Posicio::toString() const
     return posicio;
 }
 
-//FET
+//implementacio del exemple de dalt
 void Posicio::fromString(const string& pos)
 {
     m_fila = (N_FILES - 1) - (pos[1] - '1');
@@ -23,7 +29,7 @@ void Posicio::fromString(const string& pos)
     }
 }
 
-//FET
+//comparem posicions
 bool Posicio::operator==(const Posicio& posicio) const 
 {
     return m_fila == posicio.m_fila && m_columna == posicio.m_columna;
