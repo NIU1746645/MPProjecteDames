@@ -9,7 +9,7 @@ typedef enum
 {
     MOV_EMPTY, //Per defecte i s'enten que no pot fer cap moviment
     MOV_AVANCA, //avança porta problemes, per aixo l'hem anomenat avanca
-    MOV_MATA, //
+    MOV_MATA,
 } TipusMoviment;
 
 class Moviment
@@ -26,7 +26,7 @@ public:
     void mostra() const;
     void afegirMoviment(const Posicio& moviment);
     void afegirCaptura(const Posicio& captura);
-    void setTipusMoviment(int index, TipusMovment tipus);
+    void setTipusMoviment(int index, TipusMoviment tipus);
     TipusMoviment getTipusMoviment(int index) const;
     Posicio getMoviment(int index) const;
     Posicio getCaptura(int index) const;
