@@ -1,11 +1,16 @@
 #include "posicio.hpp"
+#include <string>
 
-/*
-Hem de convertir "a1" , "h6" en fila i columna.
-exemple: 
-  "a1" -> columna = 'a' - 'a' = 0 i fila = (8-1) - (1-1) = 7
-*/
+//Passem d'un string a una posicio
+Posicio::Posicio(const string& pos)
+{
+    char lletra = pos[0];
+    m_columna = lletra - 'a';
+    int numFila = pos[1] - '0';
+    m_fila = 8 - numFila;
+}
 
+//Passa una posicio a un string
 string Posicio::toString() const
 {
     string posicio = "a1";
@@ -14,13 +19,13 @@ string Posicio::toString() const
     return posicio;
 }
 
-//implementacio del exemple de dalt
+//Passa un string a una posicio
 void Posicio::fromString(const string& pos)
 {
     m_fila = (N_FILES - 1) - (pos[1] - '1');
     m_columna = pos[0] - 'a';
 
-	//Comprovar si la posicio es valida
+	//Comprova si la posicio es valida
     if (m_fila < 0 || m_fila >= N_FILES || m_columna < 0 || m_columna >= N_COLUMNES)
     {
         m_fila = -1;
@@ -28,12 +33,13 @@ void Posicio::fromString(const string& pos)
     }
 }
 
-//comparem posicions
+//Compara si dues posicions són iguals
 bool Posicio::operator==(const Posicio& posicio) const 
 {
     return m_fila == posicio.m_fila && m_columna == posicio.m_columna;
 }
 
+//Sobrecarrega de l'operador >> per llegir una Posicio
 istream& operator>>(istream& input, Posicio& posicio)
 {
     string posAux;
@@ -42,6 +48,7 @@ istream& operator>>(istream& input, Posicio& posicio)
     return input;
 }
 
+//Sobrecarrega de l'operador << per mostrar una Posicio
 ostream& operator<<(ostream& output, Posicio& posicio)
 {
     string posAux = posicio.toString();
