@@ -1,55 +1,34 @@
-#ifndef MOVIMENT_H 
+#ifndef MOVIMENT_H
 #define MOVIMENT_H
 
 #include "posicio.hpp"
+#include <vector>
 
-const int N_MOVIMENTS = 100;
+using namespace std;
 
-typedef enum
-{
-    MOV_EMPTY, //Per defecte i s'enten que no pot fer cap moviment
-    MOV_AVANCA, //avança porta problemes, per aixo l'hem anomenat avanca
-    MOV_MATA,
-} TipusMoviment;
+const int MAX_MOVIMENTS = 100;
 
 class Moviment
 {
 public:
-    Moviment() : m_FitxesMata(MOV_EMPTY) {}
-    Moviment(const Posicio& origen, const Posicio& desti) : m_origen(origen), m_desti(desti), m_FitxesMata(MOV_EMPTY) {}
+	Moviment() : m_nCami(0), m_nCaptures(0) {}
+    
+    void afegirCami(const Posicio& pos) { m_cami.push_back(pos); m_nCami++; }
+    void afegirCaptures(const Posicio& pos) { m_captures.push_back(pos); m_nCaptures++; };
+    
+    vector<Posicio> getCami() const {return m_cami;}
+    vector<Posicio> getCaptures() const { return m_captures;}
 
-    Posicio getOrigen() const { return m_origen; }
-    Posicio getDesti() const { return m_desti; }
+    int getNCami();
+    int getNCaptures();
 
-    bool esValid() const;
-    void reinicia();
-    void mostra() const;
-    void afegirMoviment(const Posicio& moviment);
-    void afegirCaptura(const Posicio& captura);
-    void setTipusMoviment(int index, TipusMoviment tipus);
-    TipusMoviment getTipusMoviment(int index) const;
-    Posicio getMoviment(int index) const;
-    Posicio getCaptura(int index) const;
-
-    int getNumMoviments() const { return m_numMoviments; }
-    int getNumaptures() const { return m_numCaptures; }
+    bool esValid() const { return !m_cami.empty();}
 
 private:
-    int m_numMoviments;
-    int m_numCaptures;
-
-    Posicio m_origen;
-    Posicio m_desti;
-
-    Posicio m_movimentsValids[N_MOVIMENTS];
-    Posicio m_movimentActual[N_MOVIMENTS];
-    TipusMoviment m_tipusMoviment[N_MOVIMENTS]; //Si mata o avança
-    //Saber quin tipus de fitxa mata
-    int m_FitxesMata;
-    Posicio m_posicionValides[N_MOVIMENTS];
-    Posicio m_captures[N_MOVIMENTS];
+    vector<Posicio> m_cami;
+    int m_nCami;
+    vector<Posicio> m_captures; 
+	int m_nCaptures;
 };
 
-#endif // MOVIMENT_H
-
-
+#endif
