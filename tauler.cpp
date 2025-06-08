@@ -526,3 +526,4 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
         }
     }
 }
+
