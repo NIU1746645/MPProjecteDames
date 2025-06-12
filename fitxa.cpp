@@ -15,15 +15,15 @@ void Fitxa::afegeixMovimentValid(const Moviment& mov)
     if (mov.esValid())
     {
         m_movimentsValids.push_back(mov);
-		m_nMovimentsValids++;
+        m_nMovimentsValids++;
     }
 }
 
 //Neteja tots els moviments
-void Fitxa::buidaMoviments() 
-{ 
-    m_movimentsValids.clear(); 
-    m_nMovimentsValids = 0; 
+void Fitxa::buidaMoviments()
+{
+    m_movimentsValids.clear();
+    m_nMovimentsValids = 0;
 }
 
 //Per passar del codi a caracters per fer el tauler
