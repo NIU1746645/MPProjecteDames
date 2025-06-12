@@ -169,7 +169,7 @@ bool Tauler::dinsDimTauler(const Posicio& pos) const
     int fila = pos.getFila();
     int columna = pos.getColumna();
 
-    if(fila >= 0 && fila < N_FILES && columna >= 0 && columna < N_COLUMNES)
+    if (fila >= 0 && fila < N_FILES && columna >= 0 && columna < N_COLUMNES)
         dins = true;
 
     return dins;
@@ -211,11 +211,11 @@ void Tauler::afegirMovimentAmbCaptura(Fitxa& fitxa, Moviment& mov, Posicio cami,
 //Calula quins son els moviments valids d'una fitxa normal
 void Tauler::movimentsNormals(Fitxa& fitxa, const Posicio& pos)
 {
-    int direccio = (fitxa.getColor() == COLOR_BLANC) ? -1 : 1; // DirecciÃ³ del moviment: -1 per blanc (amunt), +1 per negre (avall)
+    int direccio = (fitxa.getColor() == COLOR_BLANC) ? -1 : 1; // Direcció del moviment: -1 per blanc (amunt), +1 per negre (avall)
     Posicio desti;
 
     //Cas sense captures
-    for (int i = -1; i <= 1 ; i = i + 2) //Comprova les diagonals dreta i esquerra
+    for (int i = -1; i <= 1; i = i + 2) //Comprova les diagonals dreta i esquerra
     {
         desti = Posicio(pos.getFila() + direccio, pos.getColumna() + i);
 
@@ -257,7 +257,7 @@ void Tauler::saltsMultiples(Fitxa& fitxa, Moviment& movimentActual, const Posici
     vector<int> dir2;
 
 
-    if (direccio != 0) //Vol dir que es mou nomes en una direcciÃ³ (normal)
+    if (direccio != 0) //Vol dir que es mou nomes en una direcció (normal)
     {
         dir1 = { direccio, direccio };
         dir2 = { -1, 1 };
@@ -310,7 +310,7 @@ void Tauler::movimentsDama(Fitxa& fitxa, const Posicio& pos)
 
                 if (movimentValid)
                 {
-                    if (esBuida(actual)) //Si esta buida avanÃ§em normal
+                    if (esBuida(actual)) //Si esta buida avançem normal
                     {
                         if (!fContraria)
                         {
@@ -318,7 +318,7 @@ void Tauler::movimentsDama(Fitxa& fitxa, const Posicio& pos)
                             afegirMoviment(fitxa, mov, actual);
                         }
                     }
-                    else //Si esta ocupada doncs, o haurem de capturar(color contrari) o no podrem avanÃ§ar cap a aquell costat(mateix color)
+                    else //Si esta ocupada doncs, o haurem de capturar(color contrari) o no podrem avançar cap a aquell costat(mateix color)
                     {
                         if (m_tauler[actual.getFila()][actual.getColumna()].getColor() == fitxa.getColor())
                         {
@@ -337,12 +337,12 @@ void Tauler::movimentsDama(Fitxa& fitxa, const Posicio& pos)
                                 afegirMovimentAmbCaptura(fitxa, mov, possibleDesti, captura);
                                 saltsMultiples(fitxa, mov, possibleDesti, DIRECCIO_DAMES);
                             }
-                            movimentValid = false; // Atura el moviment desprÃ©s de la captura
+                            movimentValid = false; // Atura el moviment després de la captura
                         }
                     }
                 }
 
-                
+
             }
         }
     }
@@ -360,7 +360,7 @@ void Tauler::actualitzaMovimentsValids()
 
             if (fitxa.getTipus() != TIPUS_EMPTY)
             {
-                 Posicio pos(i, j);
+                Posicio pos(i, j);
                 if (fitxa.getTipus() == TIPUS_NORMAL)
                 {
                     movimentsNormals(fitxa, pos);
@@ -386,7 +386,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 
     ColorFitxa jugador = fitxa.getColor();
     bool hiHaCapturesTotes = false;
-	vector<Posicio> FIC; //Son les fitxes que tenen una o mes captures possibles (Fitxes I Captures)
+    vector<Posicio> FIC; //Son les fitxes que tenen una o mes captures possibles (Fitxes I Captures)
 
     for (int i = 0; i < N_FILES; ++i)
     {
@@ -405,7 +405,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
                     {
                         FIC.push_back(Posicio(i, j));
                         hiHaCapturesTotes = true;
-						break; 
+                        break;
                     }
                 }
             }
@@ -431,11 +431,11 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
         m_tauler[origen.getFila()][origen.getColumna()] = Fitxa();
 
         Posicio cap;
-		int nCaptures = unMov.getCaptures().size();
+        int nCaptures = unMov.getCaptures().size();
 
         for (int c = 0; c < nCaptures; c++)
         {
-			cap = unMov.getCaptures()[c];
+            cap = unMov.getCaptures()[c];
             m_tauler[cap.getFila()][cap.getColumna()] = Fitxa();
         }
 
@@ -450,7 +450,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
         if (hiHaCapturesTotes && unMov.getCaptures().empty())
         {
             Posicio pos;
-			int nFIC = FIC.size();
+            int nFIC = FIC.size();
 
             for (int l = 0; l < nFIC; l++)
             {
@@ -480,7 +480,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
         }
 
         Posicio pos;
-		int nBufar = bufar.size();
+        int nBufar = bufar.size();
 
         for (int b = 0; b < nBufar; b++)
         {
@@ -498,7 +498,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     nPosicions = 0;
     Fitxa fitxa = m_tauler[origen.getFila()][origen.getColumna()];
     vector<Moviment> moviments = fitxa.getMovimentsValids();
-	int nMoviments = fitxa.getNMovimentsValids();
+    int nMoviments = fitxa.getNMovimentsValids();
 
     Moviment mov;
     for (int i = 0; i < nMoviments; i++)
@@ -526,4 +526,3 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
         }
     }
 }
-

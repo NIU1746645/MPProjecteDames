@@ -27,8 +27,8 @@ public:
     void fromString(const string& pos);
 
 private:
-    int m_fila;   
-    int m_columna; 
+    int m_fila;
+    int m_columna;
 };
 istream& operator>>(istream& input, Posicio& posicio);
 ostream& operator<<(ostream& output, Posicio& posicio);

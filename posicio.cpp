@@ -25,7 +25,7 @@ void Posicio::fromString(const string& pos)
     m_fila = (N_FILES - 1) - (pos[1] - '1');
     m_columna = pos[0] - 'a';
 
-	//Comprova si la posicio es valida
+    //Comprova si la posicio es valida
     if (m_fila < 0 || m_fila >= N_FILES || m_columna < 0 || m_columna >= N_COLUMNES)
     {
         m_fila = -1;
@@ -33,8 +33,8 @@ void Posicio::fromString(const string& pos)
     }
 }
 
-//Compara si dues posicions sÃ³n iguals
-bool Posicio::operator==(const Posicio& posicio) const 
+//Compara si dues posicions són iguals
+bool Posicio::operator==(const Posicio& posicio) const
 {
     return m_fila == posicio.m_fila && m_columna == posicio.m_columna;
 }

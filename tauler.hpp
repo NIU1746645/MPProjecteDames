@@ -33,16 +33,19 @@ public:
     void movimentsNormals(Fitxa& fitxa, const Posicio& pos);
     void movimentsDama(Fitxa& fitxa, const Posicio& pos);
     void saltsMultiples(Fitxa& fitxa, Moviment& movimentActual, const Posicio& posActual, int direccio = 0);
-    
+
     void actualitzaMovimentsValids();
     bool mouFitxa(const Posicio& origen, const Posicio& desti);
     void getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[]);
+
+    Fitxa getFitxa(int fila, int columna) const { return m_tauler[fila][columna]; }
+
 
 private:
     Fitxa m_tauler[N_FILES][N_COLUMNES];
 
 
-    
+
 };
 
 #endif

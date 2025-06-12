@@ -18,13 +18,13 @@ typedef enum
 {
     COLOR_NEGRE,
     COLOR_BLANC,
-	SENSE_COLOR
+    SENSE_COLOR
 } ColorFitxa;
 
 class Fitxa
 {
 public:
-    Fitxa() : m_tipus(TIPUS_EMPTY), m_color(SENSE_COLOR), m_nMovimentsValids(0){};
+    Fitxa() : m_tipus(TIPUS_EMPTY), m_color(SENSE_COLOR), m_nMovimentsValids(0) {};
     Fitxa(TipusFitxa tipus, ColorFitxa color) : m_tipus(tipus), m_color(color) { m_nMovimentsValids = 0; };
 
     void setTipus(TipusFitxa tipus) { m_tipus = tipus; }
@@ -35,7 +35,7 @@ public:
 
     TipusFitxa getTipus() const { return m_tipus; }
     ColorFitxa getColor() const { return m_color; }
-	int getNMovimentsValids() const { return m_nMovimentsValids; }
+    int getNMovimentsValids() const { return m_nMovimentsValids; }
     vector<Moviment> getMovimentsValids() const { return m_movimentsValids; }
 
     void promocioADama();
@@ -44,8 +44,8 @@ public:
     void fromChar(char c);
 
 private:
-    TipusFitxa m_tipus;                
-    ColorFitxa m_color;                
+    TipusFitxa m_tipus;
+    ColorFitxa m_color;
     vector<Moviment> m_movimentsValids;
     int m_nMovimentsValids;
 };
